@@ -1,0 +1,423 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4B0000010000000000000001 /* WeDPIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000001 /* WeDPIApp.swift */; };
+		4B0000010000000000000002 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000002 /* AppState.swift */; };
+		4B0000010000000000000003 /* SpoofDPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000003 /* SpoofDPIService.swift */; };
+		4B0000010000000000000004 /* ProxyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000004 /* ProxyService.swift */; };
+		4B0000010000000000000005 /* LaunchAgentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000005 /* LaunchAgentService.swift */; };
+		4B0000010000000000000006 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000006 /* MenuBarView.swift */; };
+		4B0000010000000000000007 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000007 /* SettingsView.swift */; };
+		4B0000010000000000000008 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000008 /* LogsView.swift */; };
+		4B0000010000000000000009 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000009 /* OnboardingView.swift */; };
+		4B0000010000000000000012 /* SpoofDPIArguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000013 /* SpoofDPIArguments.swift */; };
+		4B0000010000000000000010 /* list-general.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000010 /* list-general.txt */; };
+		4B0000010000000000000011 /* ipset-all.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4B0000020000000000000011 /* ipset-all.txt */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		4B0000020000000000000000 /* WeDPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeDPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B0000020000000000000001 /* WeDPIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeDPIApp.swift; sourceTree = "<group>"; };
+		4B0000020000000000000002 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		4B0000020000000000000003 /* SpoofDPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoofDPIService.swift; sourceTree = "<group>"; };
+		4B0000020000000000000004 /* ProxyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyService.swift; sourceTree = "<group>"; };
+		4B0000020000000000000005 /* LaunchAgentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAgentService.swift; sourceTree = "<group>"; };
+		4B0000020000000000000006 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		4B0000020000000000000007 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		4B0000020000000000000008 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
+		4B0000020000000000000009 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		4B0000020000000000000010 /* list-general.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "list-general.txt"; sourceTree = "<group>"; };
+		4B0000020000000000000011 /* ipset-all.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ipset-all.txt"; sourceTree = "<group>"; };
+		4B0000020000000000000012 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4B0000020000000000000013 /* SpoofDPIArguments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoofDPIArguments.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4B0000030000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4B0000040000000000000000 = {
+			isa = PBXGroup;
+			children = (
+				4B0000040000000000000001 /* WeDPI */,
+				4B0000040000000000000099 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4B0000040000000000000001 /* WeDPI */ = {
+			isa = PBXGroup;
+			children = (
+				4B0000040000000000000002 /* App */,
+				4B0000040000000000000003 /* Models */,
+				4B0000040000000000000004 /* Services */,
+				4B0000040000000000000005 /* Views */,
+				4B0000040000000000000006 /* Resources */,
+				4B0000020000000000000012 /* Info.plist */,
+			);
+			path = WeDPI;
+			sourceTree = "<group>";
+		};
+		4B0000040000000000000002 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				4B0000020000000000000001 /* WeDPIApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		4B0000040000000000000003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4B0000020000000000000002 /* AppState.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4B0000040000000000000004 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				4B0000020000000000000013 /* SpoofDPIArguments.swift */,
+				4B0000020000000000000003 /* SpoofDPIService.swift */,
+				4B0000020000000000000004 /* ProxyService.swift */,
+				4B0000020000000000000005 /* LaunchAgentService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		4B0000040000000000000005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4B0000020000000000000006 /* MenuBarView.swift */,
+				4B0000020000000000000007 /* SettingsView.swift */,
+				4B0000020000000000000008 /* LogsView.swift */,
+				4B0000020000000000000009 /* OnboardingView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4B0000040000000000000006 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4B0000040000000000000007 /* lists */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4B0000040000000000000007 /* lists */ = {
+			isa = PBXGroup;
+			children = (
+				4B0000020000000000000010 /* list-general.txt */,
+				4B0000020000000000000011 /* ipset-all.txt */,
+			);
+			path = lists;
+			sourceTree = "<group>";
+		};
+		4B0000040000000000000099 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4B0000020000000000000000 /* WeDPI.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4B0000050000000000000001 /* WeDPI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4B0000060000000000000001 /* Build configuration list for PBXNativeTarget "WeDPI" */;
+			buildPhases = (
+				4B0000050000000000000002 /* Sources */,
+				4B0000030000000000000001 /* Frameworks */,
+				4B0000050000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WeDPI;
+			productName = WeDPI;
+			productReference = 4B0000020000000000000000 /* WeDPI.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4B0000070000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					4B0000050000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 4B0000060000000000000002 /* Build configuration list for PBXProject "WeDPI" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ru;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				ru,
+				Base,
+			);
+			mainGroup = 4B0000040000000000000000;
+			productRefGroup = 4B0000040000000000000099 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4B0000050000000000000001 /* WeDPI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4B0000050000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B0000010000000000000010 /* list-general.txt in Resources */,
+				4B0000010000000000000011 /* ipset-all.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4B0000050000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B0000010000000000000001 /* WeDPIApp.swift in Sources */,
+				4B0000010000000000000002 /* AppState.swift in Sources */,
+				4B0000010000000000000012 /* SpoofDPIArguments.swift in Sources */,
+				4B0000010000000000000003 /* SpoofDPIService.swift in Sources */,
+				4B0000010000000000000004 /* ProxyService.swift in Sources */,
+				4B0000010000000000000005 /* LaunchAgentService.swift in Sources */,
+				4B0000010000000000000006 /* MenuBarView.swift in Sources */,
+				4B0000010000000000000007 /* SettingsView.swift in Sources */,
+				4B0000010000000000000008 /* LogsView.swift in Sources */,
+				4B0000010000000000000009 /* OnboardingView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4B0000080000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		4B0000080000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		4B0000080000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = WeDPI/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WeDPI;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2024 WeDPI. MIT License.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wedpi.macos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		4B0000080000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = WeDPI/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WeDPI;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2024 WeDPI. MIT License.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wedpi.macos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4B0000060000000000000001 /* Build configuration list for PBXNativeTarget "WeDPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B0000080000000000000003 /* Debug */,
+				4B0000080000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4B0000060000000000000002 /* Build configuration list for PBXProject "WeDPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B0000080000000000000001 /* Debug */,
+				4B0000080000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4B0000070000000000000001 /* Project object */;
+}

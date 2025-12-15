@@ -1,0 +1,79 @@
+# ================================================================================
+# WeDPI - Список доменов для обхода DPI
+# ================================================================================
+# Поддомены учитываются автоматически
+# Строки начинающиеся с # игнорируются
+# ================================================================================
+
+# ================================ YOUTUBE =======================================
+youtube.com
+googlevideo.com
+ytimg.com
+ggpht.com
+googleapis.com
+gstatic.com
+youtube-nocookie.com
+youtu.be
+youtube-ui.l.google.com
+
+# ================================ DISCORD =======================================
+discord.com
+discord.gg
+discordapp.com
+discordapp.net
+discord.media
+discordcdn.com
+discord.dev
+discord.new
+discord.gift
+discord.gifts
+dis.gd
+
+# ================================ GOOGLE ========================================
+google.com
+google.ru
+googleapis.com
+gstatic.com
+googleusercontent.com
+googlesyndication.com
+googleadservices.com
+googletagmanager.com
+google-analytics.com
+googletagservices.com
+
+# ================================ FACEBOOK/META =================================
+facebook.com
+fbcdn.net
+fb.com
+fb.me
+messenger.com
+instagram.com
+cdninstagram.com
+threads.net
+
+# ================================ TWITTER/X =====================================
+twitter.com
+x.com
+twimg.com
+t.co
+tweetdeck.com
+
+# ================================ SPOTIFY =======================================
+spotify.com
+scdn.co
+spotifycdn.com
+audio-ak-spotify-com.akamaized.net
+
+# ================================ TELEGRAM ======================================
+telegram.org
+telegram.me
+t.me
+tg.me
+
+# ================================ OTHER =========================================
+rutracker.org
+nnmclub.to
+reddit.com
+redd.it
+medium.com
+

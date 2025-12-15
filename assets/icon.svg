@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="#060608"/>
+
+  <!-- Foreground mark (scaled + centered). Source: provided SVG -->
+  <g transform="translate(118 80) scale(1.2)">
+    <g id="yeti2" transform="translate(-12.5 52.577)">
+      <path id="Head" d="M0,0-1.793,2.42H45.4S-25.06,64.624-25.06,147H14.448s-56.319,116.841,2.523,187.45H59.84s5.884,48.753,45.391,69.768H147.26s29.087,36.137,70.39,52.116c41.3-15.979,70.39-52.116,70.39-52.116h42.03c39.508-21.015,45.392-69.768,45.392-69.768h42.869C477.172,263.842,420.854,147,420.854,147H460.36c0-82.377-70.454-144.581-70.454-144.581h47.188L435.3,0A270.825,270.825,0,0,0,0,0Z" transform="translate(123.682 129.663)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="15"/>
+      <path id="Face" d="M0,0H17.629s12.12,30.271,34.155,37.984L76.024,7.713H85.94S97.773,57.375,127.114,72.8c29.341-15.425,41.175-65.087,41.175-65.087H178.2l24.24,30.271C224.479,30.271,236.6,0,236.6,0h17.629V100.128A127.115,127.115,0,0,1,0,100.128Z" transform="translate(214.218 222.318)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="15"/>
+      <path id="Body" d="M0,0C43.155-1.881,83.989,40.473,100.888,70.825L69.009,90.061S121.1,128.624,121.1,198.169H-521.561c0-69.545,52.1-108.108,52.1-108.108l-31.879-19.236c16.9-30.352,57.6-72.706,100.76-70.825" transform="translate(541.561 464.498)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="15"/>
+      <path id="HornRight" d="M28.477-.545,54.3,0a67.676,67.676,0,0,0,67.676-67.676V19.489c0,37.377-16.734,45.7-38.572,60.657" transform="translate(441.1 58.93) rotate(-18)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="15"/>
+      <path id="HornLeft" d="M0,80.692l25.824-.545A67.676,67.676,0,0,1,93.5,147.823V60.657C93.5,23.28,76.766,14.955,54.928,0" transform="translate(187.546 126.354) rotate(-162)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="15"/>
+      <path id="LeftEyeFFB300" d="M4149.085,2604.121s47.917,28.566,22.576,48.378" transform="translate(-4079.892 2595.031) rotate(-60)" fill="none" stroke="#ffb300" stroke-linecap="round" stroke-linejoin="round" stroke-width="15"/>
+      <path id="RightEyeFFB300" d="M4175.371,2604.121s-47.917,28.566-22.576,48.378" transform="translate(602.716 -4613.316) rotate(60)" fill="none" stroke="#ffb300" stroke-linecap="round" stroke-linejoin="round" stroke-width="15"/>
+    </g>
+  </g>
+</svg>
+
+
