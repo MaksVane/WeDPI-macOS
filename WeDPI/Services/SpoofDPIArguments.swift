@@ -10,8 +10,8 @@ enum SpoofDPIArguments {
 
     static func arguments(port: Int) -> [String] {
         [
-            "--listen-addr", listenAddr,
-            "--listen-port", String(port),
+            // SpoofDPI 1.2.0+: listen address must include port (host:port)
+            "--listen-addr", "\(listenAddr):\(port)",
             "--https-disorder",
             "--https-fake-count", httpsFakeCount,
             "--https-split-mode", httpsSplitMode,
