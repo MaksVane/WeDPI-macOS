@@ -175,7 +175,7 @@ struct SpoofDPICheckStep: View {
                 
                 Text(isAvailable 
                     ? "Всё готово для работы"
-                    : "Необходимо установить SpoofDPI для работы приложения")
+                    : "Необходимо установить SpoofDPI (рекомендуется 1.2.0+)")
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
