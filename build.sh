@@ -204,7 +204,23 @@ create_pretty_dmg() {
     mkdir -p "$dmg_temp_dir"
 
     cp -r "$app_bundle" "$dmg_temp_dir/"
-    ln -s /Applications "$dmg_temp_dir/Applications"
+    if command -v osascript &> /dev/null; then
+        rm -f "$dmg_temp_dir/Applications" 2>/dev/null || true
+        osascript <<EOF >/dev/null 2>&1 || ln -s /Applications "$dmg_temp_dir/Applications"
+tell application "Finder"
+    set targetFolder to POSIX file "$dmg_temp_dir" as alias
+    set appFolder to POSIX file "/Applications" as alias
+    try
+        set existing to file "Applications" of targetFolder
+        delete existing
+    end try
+    set a to make new alias file to appFolder at targetFolder
+    set name of a to "Applications"
+end tell
+EOF
+    else
+        ln -s /Applications "$dmg_temp_dir/Applications"
+    fi
 
     if [ -f "$bg_png" ]; then
         mkdir -p "$dmg_temp_dir/.background"

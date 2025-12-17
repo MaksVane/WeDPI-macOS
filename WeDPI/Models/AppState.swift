@@ -100,9 +100,9 @@ class AppState: ObservableObject {
         lastUpdateCheckError = nil
         availableUpdate = nil
 
-        let repo = updatesRepo.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard repo.contains("/"), repo.split(separator: "/").count == 2 else {
-            lastUpdateCheckError = "Неверный репозиторий обновлений. Укажите формат owner/repo."
+        let repoInput = updatesRepo.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let repo = AppState.normalizeGitHubRepo(repoInput) else {
+            lastUpdateCheckError = "Неверный репозиторий обновлений. Укажите owner/repo или ссылку на GitHub репозиторий."
             return
         }
 
@@ -203,5 +203,38 @@ extension AppState {
             if pa[i] > pb[i] { return .orderedDescending }
         }
         return .orderedSame
+    }
+    
+    static func normalizeGitHubRepo(_ input: String) -> String? {
+        var s = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !s.isEmpty else { return nil }
+        
+        if s.lowercased().hasPrefix("https://") {
+            s.removeFirst("https://".count)
+        } else if s.lowercased().hasPrefix("http://") {
+            s.removeFirst("http://".count)
+        }
+        
+        if s.lowercased().hasPrefix("github.com/") {
+            s.removeFirst("github.com/".count)
+        }
+        
+        if s.lowercased().hasSuffix(".git") {
+            s.removeLast(".git".count)
+        }
+        
+        // allow pasting releases links
+        if let range = s.range(of: "/releases", options: [.caseInsensitive, .backwards]), range.upperBound == s.endIndex || s[range.upperBound...].hasPrefix("/") {
+            s = String(s[..<range.lowerBound])
+        }
+        
+        s = s.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        
+        let parts = s.split(separator: "/")
+        guard parts.count == 2 else { return nil }
+        let owner = parts[0].trimmingCharacters(in: .whitespacesAndNewlines)
+        let repo = parts[1].trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !owner.isEmpty, !repo.isEmpty else { return nil }
+        return "\(owner)/\(repo)"
     }
 }

@@ -147,6 +147,24 @@ class SpoofDPIService: ObservableObject {
         Thread.sleep(forTimeInterval: 0.5)
         
         if process?.isRunning == true {
+            do {
+                try proxyService.enableProxy(port: port)
+                DispatchQueue.main.async {
+                    self.addLog("Системный прокси включён: 127.0.0.1:\(port)")
+                }
+            } catch {
+                self.process?.terminate()
+                self.process?.waitUntilExit()
+                self.process = nil
+                self.outputPipe?.fileHandleForReading.readabilityHandler = nil
+                self.outputPipe = nil
+                
+                DispatchQueue.main.async {
+                    self.addLog("ERROR: не удалось включить системный прокси: \(error.localizedDescription)")
+                }
+                throw error
+            }
+            
             DispatchQueue.main.async {
                 self.isRunning = true
                 self.addLog("SpoofDPI запущен на порту \(port)")
@@ -194,6 +212,17 @@ class SpoofDPIService: ObservableObject {
         if bypassDomainsApplied {
             proxyService.restoreBypassDomainsIfNeeded()
             bypassDomainsApplied = false
+        }
+
+        do {
+            try proxyService.disableProxy()
+            DispatchQueue.main.async {
+                self.addLog("Системный прокси выключен")
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.addLog("WARN: не удалось выключить системный прокси: \(error.localizedDescription)")
+            }
         }
         
         DispatchQueue.main.async {

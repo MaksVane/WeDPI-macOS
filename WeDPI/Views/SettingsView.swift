@@ -219,8 +219,9 @@ struct AboutView: View {
                     .disabled(appState.isCheckingForUpdates)
 
                     Button("Открыть Releases") {
-                        let repo = appState.updatesRepo.trimmingCharacters(in: .whitespacesAndNewlines)
-                        guard !repo.isEmpty, let url = URL(string: "https://github.com/\(repo)/releases") else { return }
+                        let input = appState.updatesRepo.trimmingCharacters(in: .whitespacesAndNewlines)
+                        guard let repo = AppState.normalizeGitHubRepo(input),
+                              let url = URL(string: "https://github.com/\(repo)/releases") else { return }
                         NSWorkspace.shared.open(url)
                     }
                     .buttonStyle(.bordered)
