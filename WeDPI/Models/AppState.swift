@@ -7,7 +7,7 @@ class AppState: ObservableObject {
     @Published var statusMessage: String = "Отключено"
     @Published var showError: Bool = false
 
-    @AppStorage("updatesRepo") var updatesRepo: String = "user/WeDPI-macOS"
+    @AppStorage("updatesRepo") var updatesRepo: String = "MaksVane/WeDPI-macOS"
     @Published var isCheckingForUpdates: Bool = false
     @Published var lastUpdateCheckError: String?
     @Published var availableUpdate: AvailableUpdate?
