@@ -142,7 +142,7 @@ struct ConnectionView: View {
         print("Начинаем подключение...")
         
         do {
-            try spoofDPIService.start(port: appState.proxyPort)
+            try spoofDPIService.start(port: appState.proxyPort, bypassDomains: appState.effectiveBypassDomains)
             
             Thread.sleep(forTimeInterval: 0.5)
             
@@ -303,7 +303,7 @@ struct BottomActionsView: View {
             }
             .buttonStyle(.plain)
             .sheet(isPresented: $showSettings) {
-                SettingsView(isPresented: $showSettings)
+                SettingsView(isPresented: $showSettings, showHeader: true)
                     .environmentObject(appState)
                     .environmentObject(spoofDPIService)
             }

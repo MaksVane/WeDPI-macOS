@@ -7,7 +7,7 @@ struct WeDPIApp: App {
     
     var body: some Scene {
         Settings {
-            SettingsView(isPresented: .constant(true))
+            SettingsView(isPresented: .constant(true), showHeader: false)
                 .environmentObject(appDelegate.appState)
                 .environmentObject(appDelegate.spoofDPIService)
         }
@@ -77,7 +77,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     private func autoConnect() {
         do {
-            try spoofDPIService.start(port: appState.proxyPort)
+            try spoofDPIService.start(port: appState.proxyPort, bypassDomains: appState.effectiveBypassDomains)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.appState.isConnected = true

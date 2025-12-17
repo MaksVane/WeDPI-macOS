@@ -14,6 +14,9 @@ class AppState: ObservableObject {
     
     @AppStorage("autoConnect") var autoConnect: Bool = false
     @AppStorage("proxyPort") var proxyPort: Int = 8080
+    @AppStorage("bypassDiscord") var bypassDiscord: Bool = false
+    @AppStorage("customBypassEnabled") var customBypassEnabled: Bool = false
+    @AppStorage("customBypassDomains") var customBypassDomainsRaw: String = ""
     
     @Published var connectionTime: TimeInterval = 0
     
@@ -53,6 +56,39 @@ class AppState: ObservableObject {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0.0"
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "0"
         return "\(version) (\(build))"
+    }
+
+    var customBypassDomains: [String] {
+        let raw = customBypassDomainsRaw
+        let separators = CharacterSet(charactersIn: ",\n\t ")
+        var seen = Set<String>()
+        var result: [String] = []
+        for part in raw.components(separatedBy: separators) {
+            let s = part.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !s.isEmpty else { continue }
+            if !seen.contains(s) {
+                seen.insert(s)
+                result.append(s)
+            }
+        }
+        return result
+    }
+    
+    var effectiveBypassDomains: [String] {
+        var domains: [String] = []
+        if bypassDiscord {
+            domains.append(contentsOf: ProxyService.discordBypassDomains)
+        }
+        if customBypassEnabled {
+            domains.append(contentsOf: customBypassDomains)
+        }
+        var seen = Set<String>()
+        var result: [String] = []
+        for d in domains where !seen.contains(d) {
+            seen.insert(d)
+            result.append(d)
+        }
+        return result
     }
 
     @MainActor

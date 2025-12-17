@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -15,6 +15,25 @@ APP_BUNDLE="$BUILD_DIR/$APP_NAME.app"
 status() { echo -e "${GREEN}✓${NC} $1"; }
 warn() { echo -e "${YELLOW}⚠${NC} $1"; }
 error() { echo -e "${RED}✗${NC} $1"; exit 1; }
+
+tail_log() {
+    local file="$1"
+    local lines="${2:-120}"
+    if [ -f "$file" ]; then
+        echo ""
+        echo -e "${YELLOW}Последние строки лога ($file):${NC}"
+        tail -n "$lines" "$file" || true
+    fi
+}
+
+print_xcodebuild_errors() {
+    local file="$1"
+    if [ -f "$file" ]; then
+        echo ""
+        echo -e "${YELLOW}Ошибки из лога ($file):${NC}"
+        grep -E "(^|\\s)(error:|fatal error:|ARCHIVE FAILED)" "$file" | tail -n 120 || true
+    fi
+}
 
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}           WeDPI - Build               ${NC}"
@@ -57,20 +76,29 @@ fi
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"
 
+XCODEBUILD_LOG="$BUILD_DIR/xcodebuild.log"
+DMG_LOG="$BUILD_DIR/dmg.log"
+
 echo ""
 echo -e "${BLUE}[1/3]${NC} Сборка приложения..."
 
 cd "$SCRIPT_DIR"
-xcodebuild -project WeDPI.xcodeproj \
-    -scheme WeDPI \
-    -configuration Release \
-    -derivedDataPath "$BUILD_DIR/DerivedData" \
-    -archivePath "$BUILD_DIR/WeDPI.xcarchive" \
-    archive \
-    CODE_SIGN_IDENTITY="-" \
-    CODE_SIGNING_REQUIRED=NO \
-    CODE_SIGNING_ALLOWED=NO \
-    >/dev/null
+{
+    xcodebuild -project WeDPI.xcodeproj \
+        -scheme WeDPI \
+        -configuration Release \
+        -derivedDataPath "$BUILD_DIR/DerivedData" \
+        -archivePath "$BUILD_DIR/WeDPI.xcarchive" \
+        -destination "generic/platform=macOS" \
+        -quiet \
+        archive \
+        CODE_SIGN_IDENTITY="-" \
+        CODE_SIGNING_REQUIRED=NO \
+        CODE_SIGNING_ALLOWED=NO
+} >"$XCODEBUILD_LOG" 2>&1 || {
+    print_xcodebuild_errors "$XCODEBUILD_LOG"
+    error "Сборка не удалась (см. лог: $XCODEBUILD_LOG)"
+}
 
 status "Сборка завершена"
 
@@ -184,10 +212,16 @@ create_pretty_dmg() {
     fi
 
     rm -f "$dmg_rw" "$dmg_final"
-    hdiutil create -volname "$volume_name" -srcfolder "$dmg_temp_dir" -ov -format UDRW "$dmg_rw" > /dev/null
+    : >"$DMG_LOG"
+    hdiutil create -volname "$volume_name" -srcfolder "$dmg_temp_dir" -ov -format UDRW "$dmg_rw" >>"$DMG_LOG" 2>&1
 
-    dmg_mount=$(hdiutil attach -readwrite -noverify -nobrowse "$dmg_rw" | awk 'END{print $3}')
+    local attach_out
+    attach_out="$(hdiutil attach -readwrite -noverify -nobrowse "$dmg_rw" 2>>"$DMG_LOG" || true)"
+    local dmg_dev
+    dmg_dev="$(echo "$attach_out" | awk 'NR==1{print $1}')"
+    dmg_mount="$(echo "$attach_out" | awk 'END{print $3}')"
     if [ -z "$dmg_mount" ]; then
+        tail_log "$DMG_LOG" 160
         error "Не удалось смонтировать DMG"
     fi
 
@@ -222,8 +256,40 @@ end tell
 EOF
 
     sync
-    hdiutil detach "$dmg_mount" -quiet || hdiutil detach "$dmg_mount" -force -quiet
-    hdiutil convert "$dmg_rw" -format UDZO -imagekey zlib-level=9 -ov -o "$dmg_final" > /dev/null
+    sleep 0.6
+
+    local detach_target="$dmg_mount"
+    if [ -n "${dmg_dev:-}" ]; then
+        detach_target="$dmg_dev"
+    fi
+
+    local detached=0
+    for attempt in 1 2 3 4 5; do
+        if hdiutil detach "$detach_target" -quiet >>"$DMG_LOG" 2>&1; then
+            detached=1
+            break
+        fi
+        hdiutil detach "$detach_target" -force -quiet >>"$DMG_LOG" 2>&1 || true
+        sleep "$attempt"
+    done
+    if [ "$detached" -ne 1 ]; then
+        tail_log "$DMG_LOG" 200
+        error "Не удалось отмонтировать DMG"
+    fi
+
+    local converted=0
+    for attempt in 1 2 3 4 5; do
+        rm -f "$dmg_final"
+        if hdiutil convert "$dmg_rw" -format UDZO -imagekey zlib-level=9 -ov -o "$dmg_final" >>"$DMG_LOG" 2>&1; then
+            converted=1
+            break
+        fi
+        sleep "$attempt"
+    done
+    if [ "$converted" -ne 1 ]; then
+        tail_log "$DMG_LOG" 200
+        error "Не удалось собрать DMG (см. лог: $DMG_LOG)"
+    fi
     rm -f "$dmg_rw"
     rm -rf "$dmg_temp_dir"
 }
@@ -240,7 +306,11 @@ if command -v hdiutil &> /dev/null; then
         mkdir -p "$DMG_TEMP"
         cp -r "$APP_BUNDLE" "$DMG_TEMP/"
         ln -s /Applications "$DMG_TEMP/Applications"
-        hdiutil create -volname "$APP_NAME" -srcfolder "$DMG_TEMP" -ov -format UDZO "$DMG_PATH" > /dev/null
+        : >"$DMG_LOG"
+        hdiutil create -volname "$APP_NAME" -srcfolder "$DMG_TEMP" -ov -format UDZO "$DMG_PATH" >>"$DMG_LOG" 2>&1 || {
+            tail_log "$DMG_LOG" 200
+            error "Не удалось собрать DMG (см. лог: $DMG_LOG)"
+        }
         rm -rf "$DMG_TEMP"
     fi
     status "DMG: $DMG_PATH"

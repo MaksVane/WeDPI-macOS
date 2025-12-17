@@ -6,25 +6,29 @@ struct SettingsView: View {
     @EnvironmentObject var spoofDPIService: SpoofDPIService
     @Environment(\.dismiss) var dismiss
     @Binding var isPresented: Bool
+    let showHeader: Bool
     
-    init(isPresented: Binding<Bool> = .constant(true)) {
+    init(isPresented: Binding<Bool> = .constant(true), showHeader: Bool = true) {
         self._isPresented = isPresented
+        self.showHeader = showHeader
     }
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Text("Настройки")
-                    .font(.headline)
+            if showHeader {
+                HStack {
+                    Text("Настройки")
+                        .font(.headline)
                     Spacer()
-                Button(action: closeSettings) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.title2)
-                        .foregroundColor(.secondary)
+                    Button(action: closeSettings) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .foregroundColor(.secondary)
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
+                .padding()
             }
-            .padding()
             
             TabView {
                 GeneralSettingsView()
@@ -45,6 +49,7 @@ struct SettingsView: View {
             }
         }
         .frame(width: 400, height: 450)
+        .background(Color(NSColor.windowBackgroundColor))
     }
     
     private func closeSettings() {
@@ -54,8 +59,10 @@ struct SettingsView: View {
 }
 struct GeneralSettingsView: View {
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var spoofDPIService: SpoofDPIService
     @State private var launchAtLogin = false
     @State private var portString: String = ""
+    @State private var customBypassText: String = ""
     
     var body: some View {
         Form {
@@ -92,6 +99,39 @@ struct GeneralSettingsView: View {
             }
             
             Section {
+                Toggle("Обход Discord (DIRECT)", isOn: $appState.bypassDiscord)
+                    .onChange(of: appState.bypassDiscord) { _ in
+                        spoofDPIService.setBypassDomains(appState.effectiveBypassDomains)
+                    }
+                Text("Полезно, если демонстрация экрана/Go Live ломается при включённом WeDPI. Discord-домены будут идти напрямую, остальной трафик — через WeDPI.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Toggle("Пользовательский обход (DIRECT)", isOn: $appState.customBypassEnabled)
+                    .onChange(of: appState.customBypassEnabled) { _ in
+                        spoofDPIService.setBypassDomains(appState.effectiveBypassDomains)
+                    }
+                
+                TextEditor(text: $customBypassText)
+                    .font(.system(.caption, design: .monospaced))
+                    .frame(minHeight: 80)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color.secondary.opacity(0.25), lineWidth: 1)
+                    )
+                    .onChange(of: customBypassText) { newValue in
+                        appState.customBypassDomainsRaw = newValue
+                        spoofDPIService.setBypassDomains(appState.effectiveBypassDomains)
+                    }
+                
+                Text("Список доменов/масок через запятую или с новой строки. Примеры: `youtube.com`, `.googlevideo.com`, `gateway.discord.gg`")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            } header: {
+                Text("Совместимость")
+            }
+            
+            Section {
                 HStack {
                     Text("SpoofDPI")
                     Spacer()
@@ -111,6 +151,7 @@ struct GeneralSettingsView: View {
         .onAppear {
             launchAtLogin = isLaunchAtLoginEnabled()
             portString = String(appState.proxyPort)
+            customBypassText = appState.customBypassDomainsRaw
         }
     }
     
@@ -292,7 +333,7 @@ struct UpdateResultView: View {
 }
 
 #Preview {
-    SettingsView(isPresented: .constant(true))
+    SettingsView(isPresented: .constant(true), showHeader: true)
         .environmentObject(AppState())
         .environmentObject(SpoofDPIService())
 }

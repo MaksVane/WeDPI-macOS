@@ -7,6 +7,48 @@ class SpoofDPIService: ObservableObject {
     
     private var process: Process?
     private var outputPipe: Pipe?
+    private let proxyService = ProxyService()
+    private var bypassDomainsApplied = false
+    
+    private var partialLineBuffer: String = ""
+    private var lastLogLine: String?
+    private var lastLogLineCount: Int = 0
+    
+    func setBypassDomains(_ domains: [String]) {
+        guard isRunning else { return }
+        
+        let shouldApply = !domains.isEmpty
+        if shouldApply == bypassDomainsApplied && !shouldApply {
+            return
+        }
+        
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            guard let self else { return }
+            if shouldApply {
+                do {
+                    try self.proxyService.applyBypassDomains(domains)
+                    self.bypassDomainsApplied = true
+                    DispatchQueue.main.async {
+                        self.addLog("Обход (DIRECT) применён")
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.addLog("WARN: не удалось применить обход: \(error.localizedDescription)")
+                    }
+                }
+            } else {
+                self.proxyService.restoreBypassDomainsIfNeeded()
+                self.bypassDomainsApplied = false
+                DispatchQueue.main.async {
+                    self.addLog("Обход (DIRECT) отключён")
+                }
+            }
+        }
+    }
+    
+    func setDiscordBypassEnabled(_ enabled: Bool) {
+        setBypassDomains(enabled ? ProxyService.discordBypassDomains : [])
+    }
     
     var spoofDPIPath: String {
         let possiblePaths = [
@@ -66,7 +108,7 @@ class SpoofDPIService: ObservableObject {
         }
     }
     
-    func start(port: Int = 8080) throws {
+    func start(port: Int = 8080, bypassDomains: [String] = []) throws {
         guard !isRunning else {
             print("SpoofDPI уже запущен")
             return
@@ -94,17 +136,9 @@ class SpoofDPIService: ObservableObject {
         
         outputPipe?.fileHandleForReading.readabilityHandler = { [weak self] handle in
             let data = handle.availableData
-            if let output = String(data: data, encoding: .utf8), !output.isEmpty {
-                DispatchQueue.main.async {
-                    let trimmed = output.trimmingCharacters(in: .whitespacesAndNewlines)
-                    if !trimmed.isEmpty {
-                        self?.logs.append(trimmed)
-                        print("SpoofDPI: \(trimmed)")
-                    }
-                    if (self?.logs.count ?? 0) > 500 {
-                        self?.logs.removeFirst(100)
-                    }
-                }
+            guard let self, let chunk = String(data: data, encoding: .utf8), !chunk.isEmpty else { return }
+            DispatchQueue.main.async {
+                self.ingestLogChunk(chunk)
             }
         }
         
@@ -118,6 +152,20 @@ class SpoofDPIService: ObservableObject {
                 self.addLog("SpoofDPI запущен на порту \(port)")
             }
             print("SpoofDPI успешно запущен, PID: \(process?.processIdentifier ?? 0)")
+            
+            if !bypassDomains.isEmpty {
+                do {
+                    try proxyService.applyBypassDomains(bypassDomains)
+                    bypassDomainsApplied = true
+                    DispatchQueue.main.async {
+                        self.addLog("Обход (DIRECT) применён")
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.addLog("WARN: не удалось применить обход: \(error.localizedDescription)")
+                    }
+                }
+            }
         } else {
             throw SpoofDPIError.failedToStart("Процесс завершился сразу после запуска")
         }
@@ -139,6 +187,14 @@ class SpoofDPIService: ObservableObject {
         
         process = nil
         outputPipe = nil
+        partialLineBuffer = ""
+        lastLogLine = nil
+        lastLogLineCount = 0
+        
+        if bypassDomainsApplied {
+            proxyService.restoreBypassDomainsIfNeeded()
+            bypassDomainsApplied = false
+        }
         
         DispatchQueue.main.async {
             self.isRunning = false
@@ -155,6 +211,63 @@ class SpoofDPIService: ObservableObject {
     
     func clearLogs() {
         logs.removeAll()
+    }
+    
+    private func ingestLogChunk(_ chunk: String) {
+        let sanitizedChunk = stripANSIEscapes(from: chunk)
+        
+        partialLineBuffer += sanitizedChunk
+        partialLineBuffer = partialLineBuffer.replacingOccurrences(of: "\r\n", with: "\n")
+        partialLineBuffer = partialLineBuffer.replacingOccurrences(of: "\r", with: "\n")
+        
+        let parts = partialLineBuffer.split(separator: "\n", omittingEmptySubsequences: false)
+        guard !parts.isEmpty else { return }
+        
+        let endsWithNewline = partialLineBuffer.hasSuffix("\n")
+        
+        let linesToEmit: ArraySlice<Substring>
+        if endsWithNewline {
+            linesToEmit = parts[0..<parts.count]
+            partialLineBuffer = ""
+        } else if parts.count >= 2 {
+            linesToEmit = parts[0..<(parts.count - 1)]
+            partialLineBuffer = String(parts.last ?? "")
+        } else {
+            return
+        }
+        
+        for raw in linesToEmit {
+            let line = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !line.isEmpty else { continue }
+            appendLogLineWithDedup(line)
+        }
+        
+        if logs.count > 800 {
+            logs.removeFirst(logs.count - 600)
+        }
+    }
+    
+    private func appendLogLineWithDedup(_ line: String) {
+        if let last = lastLogLine, last == line, !logs.isEmpty {
+            lastLogLineCount += 1
+            logs[logs.count - 1] = "\(line) (×\(lastLogLineCount))"
+            return
+        }
+        
+        lastLogLine = line
+        lastLogLineCount = 1
+        logs.append(line)
+        
+        if logs.count > 500 {
+            logs.removeFirst(100)
+        }
+    }
+    
+    private func stripANSIEscapes(from s: String) -> String {
+        let pattern = #"\u{001B}\[[0-9;]*[A-Za-z]"#
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else { return s }
+        let range = NSRange(s.startIndex..<s.endIndex, in: s)
+        return regex.stringByReplacingMatches(in: s, options: [], range: range, withTemplate: "")
     }
 }
 

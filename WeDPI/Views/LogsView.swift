@@ -110,7 +110,7 @@ struct LogEntryView: View {
     var logType: LogType {
         if log.contains("ERROR") || log.contains("error") || log.contains("Ошибка") {
             return .error
-        } else if log.contains("WARN") || log.contains("warning") {
+        } else if log.contains("WARN") || log.contains("WRN") || log.contains("warning") {
             return .warning
         } else if log.contains("запущен") || log.contains("started") || log.contains("connected") {
             return .success
